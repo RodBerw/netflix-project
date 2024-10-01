@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 const Sequelize = require("sequelize");
 
-dotenv.config({path: "../.env"});
+dotenv.config();
 
 const connection = new Sequelize({
   dialect: "mysql",
@@ -12,12 +12,13 @@ const connection = new Sequelize({
   port: 3306,
 });
 
-connection.authenticate({
-  logging: false,
-})
-.then(() => {
-  console.log("Connection has been established successfully.");
-})
-connection.sync();
+connection
+  .authenticate({
+    logging: false,
+  })
+  .then(() => {
+    console.log("Connection has been established successfully.");
+    connection.sync();
+  });
 
 export { connection };

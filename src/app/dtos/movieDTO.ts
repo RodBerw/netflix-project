@@ -6,4 +6,5 @@ export interface movieDTO {
   director: string;
   genre: string;
   releaseDate: Date;
+  imageUrl: string;
 }

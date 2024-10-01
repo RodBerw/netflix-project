@@ -14,6 +14,10 @@ class MovieService {
     return await Movie.findByPk(id);
   }
 
+  public async getMoviesByUserId(userId: number) {
+    return await Movie.findAll({ where: { userId } });
+  }
+
   public async updateMovie(id: number, movie: movieDTO) {
     return await Movie.update(movie, { where: { id } });
   }
