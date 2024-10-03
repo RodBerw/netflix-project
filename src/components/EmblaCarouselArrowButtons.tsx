@@ -14,19 +14,24 @@ type UsePrevNextButtonsType = {
 };
 
 export const usePrevNextButtons = (
-  emblaApi: EmblaCarouselType | undefined
+  emblaApi: EmblaCarouselType | undefined,
+  scrollNumber: number,
 ): UsePrevNextButtonsType => {
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
 
   const onPrevButtonClick = useCallback(() => {
     if (!emblaApi) return;
-    emblaApi.scrollPrev();
+    for(let i = 0; i < scrollNumber; i++){
+      emblaApi.scrollPrev();
+    }
   }, [emblaApi]);
 
   const onNextButtonClick = useCallback(() => {
     if (!emblaApi) return;
-    emblaApi.scrollNext();
+    for(let i = 0; i < scrollNumber; i++){
+      emblaApi.scrollNext();
+    }
   }, [emblaApi]);
 
   const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
@@ -56,7 +61,7 @@ export const PrevButton: React.FC<PropType> = (props) => {
 
   return (
     <button
-      className="embla__button embla__button--prev"
+      className="embla__button embla__button__left embla__button--prev"
       type="button"
       {...restProps}
     >
@@ -76,7 +81,7 @@ export const NextButton: React.FC<PropType> = (props) => {
 
   return (
     <button
-      className="embla__button embla__button--next"
+      className="embla__button embla__button__right embla__button--next"
       type="button"
       {...restProps}
     >

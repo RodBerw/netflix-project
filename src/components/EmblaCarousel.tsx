@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { EmblaOptionsType } from "embla-carousel";
 import {
   PrevButton,
@@ -9,6 +9,7 @@ import {
 } from "./EmblaCarouselArrowButtons";
 import useEmblaCarousel from "embla-carousel-react";
 import { movieDTO } from "@/app/dtos/movieDTO";
+import MovieCard from "./MovieCard";
 
 type PropType = {
   movies: movieDTO[];
@@ -20,25 +21,33 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const [showArrows, setShowArrows] = useState(false);
   const [slidesCount, setSlidesCount] = useState<number[]>([]);
-  const [containersCount, setCountainersCount] = useState<number[]>([]);
-  const size = useWindowSize();
 
-  useEffect(() => {
-    const count = Math.floor((6 * screen.width) / 1980);
-    setSlidesCount(Array.from(Array(count).keys()));
-    setCountainersCount(Array.from(Array(count - 1).keys()));
-  }, [useWindo]);
+  let movieIndex = 0;
+  let slidesPerPage = 8;
 
-  const {
+  let {
     prevBtnDisabled,
     nextBtnDisabled,
     onPrevButtonClick,
     onNextButtonClick,
-  } = usePrevNextButtons(emblaApi);
+  } = usePrevNextButtons(emblaApi, slidesCount.length);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const count = Math.floor((slidesPerPage * innerWidth) / screen.width);
+      setSlidesCount(new Array(count).fill(0));
+    }
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <section
-      className="embla"
+      className="embla !m-0"
       onMouseEnter={() => {
         setShowArrows(true);
       }}
@@ -46,16 +55,18 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
     >
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {containersCount.map((container, index) => (
+          {movies.map((movie, index) => {
+            const i = movieIndex;
+            movieIndex = (movieIndex + 1) % movies.length;
+            return(
             <div
-              className="embla__slide flex flex-row justify-around"
+              className="embla__slide flex flex-nowrap w-full"
+              style={{ flex: `0 0 ${ 100 / slidesCount.length}%`, gap: "2px" }}
               key={index}
             >
-              {slidesCount.map((slide, index) => (
-                <div className="embla__slide__number">{index + 1}</div>
-              ))}
+              <MovieCard movieTitle={movies[i]?.title} imageUrl={movies[i]?.imageUrl}/>
             </div>
-          ))}
+          )})}
         </div>
       </div>
 

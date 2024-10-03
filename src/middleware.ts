@@ -5,7 +5,7 @@ import {jwtVerify} from "jose";
 export async function middleware(req: NextRequest) {
   // Allow register and login without token
   if((req.nextUrl.toString().includes("/api/user") && req.method === "POST") ||
-   req.nextUrl.toString().includes("/api/login") && req.method === "POST") {
+   req.nextUrl.toString().includes("/api/login")) {
     return NextResponse.next();
   }
 

@@ -30,13 +30,12 @@ body {
 /* Embla Carousel */
 
 .embla {
-  max-width: 48rem;
+  width: 100%;
   margin: auto;
   --slide-height: 19rem;
   --slide-spacing: 0.5rem;
   --slide-size: 100%;
   position: relative;
-  background-color: #633d3d;
 }
 .embla__viewport {
   overflow: hidden;
@@ -47,21 +46,18 @@ body {
   margin-left: calc(var(--slide-spacing) * -1);
 }
 .embla__slide {
+  /* width: var(--slide-size); */
   transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
-  min-width: 0;
   padding-left: var(--slide-spacing);
 }
 .embla__slide__number {
   box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  border-radius: 1.8rem;
   font-size: 4rem;
   font-weight: 600;
-  display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--slide-height);
   user-select: none;
+  flex: 0 0 auto;
 }
 .embla__controls {
   width: 100%;
@@ -98,7 +94,19 @@ body {
   color: var(--primary);
 }
 
+.embla__button__right:hover{
+  background: linear-gradient(-90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0,0,0,0) 100%);
+}
+
+.embla__button__left:hover{
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0,0,0,0) 100%);
+}
+
 .embla__button__svg {
   width: 35%;
   height: 35%;
+}
+
+.input:focus {
+  outline: 1px solid white !important;
 }

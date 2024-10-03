@@ -44,23 +44,25 @@ export async function POST(req: NextRequest) {
 
     const tokens = await authService.generateTokens(user.id, user.email);
 
-    NextResponse.next().cookies.set("refreshToken", tokens.refreshToken, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
     if (process.env.NODE_ENV !== "production") {
       console.error(
         "ATTENTION: Token is not secure in development mode, for production set NODE_ENV to 'production'"
       );
     }
 
-    return NextResponse.json(
-      { message: "Logged in with accessToken: " + tokens.accessToken },
-      { status: 200 }
+    const response = NextResponse.json(
+      { message: "Logged in with accessToken", token: tokens.accessToken, },
+      { status: 200 },
     );
+
+    response.cookies.set("token", tokens.refreshToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return response;
   } catch (err: any) {
     return NextResponse.json(
       { message: "Error while logging in: " + err.message },
@@ -71,7 +73,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    if (!req.cookies.get("refreshToken")) {
+    if (!req.cookies.get("token")) {
       return NextResponse.json(
         { message: "No refresh token found" },
         { status: 404 }
@@ -85,12 +87,14 @@ export async function GET(req: NextRequest) {
       throw new Error("JWT_ACCESS_SECRET is not defined");
     }
 
-    const newToken = await authService.refreshAccessToken(
-      req.cookies.get("refreshToken") as unknown as string
+    console.log("refreshToken: " + req.cookies.get("token"));
+
+    const newAccessToken = await authService.refreshAccessToken(
+      req.cookies.get("token")?.value as string
     );
 
     return NextResponse.json(
-      { message: "Token refreshed, new token: " + newToken },
+      { message: "Token refreshed", token: newAccessToken },
       { status: 200 }
     );
   } catch (err: any) {
