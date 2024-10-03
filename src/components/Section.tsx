@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import useEmblaCarousel from "embla-carousel-react";
 import EmblaCarousel from "./EmblaCarousel";
+import api from "@/utils/configAxios";
 
 interface Props {
   sectionName: string;
@@ -22,7 +23,7 @@ export default function Section({ sectionName }: Props) {
     //const loggedUserId = localStorage.getItem("userId");
     const loggedUserId = 1;
 
-    axios
+    api
       .get(`/api/movie/?userId=${loggedUserId}`)
       .then((res) => {
         setMovies(res.data);
@@ -35,7 +36,7 @@ export default function Section({ sectionName }: Props) {
   return (
     <div className="flex flex-col w-100">
       <h1>{sectionName}</h1>
-      <EmblaCarousel movies={movies} options={{loop: true}} />
+      <EmblaCarousel movies={movies} options={{ loop: true }} />
       {/* <div className="embla__container w-1/4 flex">
         <div className="embla__slide" style={{ flex: "0 0 100%" }}>
           {movies.map((movie) => (

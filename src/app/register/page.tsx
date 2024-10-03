@@ -2,14 +2,23 @@
 
 import LoginWrapper from "@/components/LoginWrapper";
 import api from "@/utils/configAxios";
-import { validateEmail, validatePassword } from "@/utils/validation";
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from "@/utils/validation";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function Login() {
+export default function Register() {
   const router = useRouter();
+  const [usernameInput, setUsernameInput] = useState({
+    value: "",
+    isValid: false,
+    message: "",
+  });
   const [emailInput, setEmailInput] = useState({
     value: "",
     isValid: false,
@@ -20,15 +29,25 @@ export default function Login() {
     isValid: false,
     message: "",
   });
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState({
+    value: "",
+    isValid: false,
+    message: "",
+  });
   const [submitted, setSubmitted] = useState(false);
-  const [notification, setNotification] = useState("");
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    if (emailInput.isValid && passwordInput.isValid) {
+    if (
+      usernameInput.isValid &&
+      emailInput.isValid &&
+      passwordInput.isValid &&
+      passwordInput.value === confirmPasswordInput.value
+    ) {
       api
-        .post("/api/login", {
+        .post("/api/register", {
+          username: usernameInput.value,
           email: emailInput.value,
           password: passwordInput.value,
         })
@@ -37,11 +56,6 @@ export default function Login() {
           router.push("/");
         })
         .catch((err) => {
-          if (err.response.status === 404) {
-            setNotification("User not found");
-          } else if (err.response.status === 401) {
-            setNotification("Invalid password");
-          }
           console.error(err);
         });
     } else {
@@ -53,11 +67,24 @@ export default function Login() {
   return (
     <LoginWrapper>
       <h1 className="mb-7 text-4xl font-bold">Login</h1>
-      <p className="text-red-500">{notification}</p>
       <form
         className="flex flex-col gap-4 items-center"
         onSubmit={handleSubmit}
       >
+        <Input
+          classNames={{ inputWrapper: ["bg-gray-900", "bg-opacity-30"] }}
+          type="username"
+          variant="faded"
+          radius="sm"
+          label="Username"
+          onValueChange={(e) => {
+            setUsernameInput(validateUsername(e));
+          }}
+          isInvalid={
+            !usernameInput.isValid && (usernameInput.value != "" || submitted)
+          }
+          errorMessage={usernameInput.message}
+        />
         <Input
           classNames={{ inputWrapper: ["bg-gray-900", "bg-opacity-30"] }}
           type="email"
@@ -94,22 +121,11 @@ export default function Login() {
           color="default"
           type="submit"
         >
-          Login
+          Register
         </Button>
-        <a href="/" className="text-primary hover:underline">
-          Forgot your password?
+        <a href="/login" className="text-primary hover:underline">
+          Already have an account? Login
         </a>
-        <h1 className="from-neutral-50">OR</h1>
-        <Button
-          className="w-full bg-secondary text-primary font-bold"
-          href="/"
-          variant="flat"
-          radius="sm"
-          color="default"
-          onClick={() => router.push("/register")}
-        >
-          Sign Up
-        </Button>
       </form>
     </LoginWrapper>
   );
