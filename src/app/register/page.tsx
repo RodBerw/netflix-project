@@ -46,8 +46,8 @@ export default function Register() {
       passwordInput.value === confirmPasswordInput.value
     ) {
       api
-        .post("/api/register", {
-          username: usernameInput.value,
+        .post("/api/user", {
+          name: usernameInput.value,
           email: emailInput.value,
           password: passwordInput.value,
         })
@@ -113,6 +113,26 @@ export default function Register() {
             !passwordInput.isValid && (passwordInput.value != "" || submitted)
           }
           errorMessage={passwordInput.message}
+        />
+        <Input
+          classNames={{ inputWrapper: ["bg-gray-900", "bg-opacity-30"] }}
+          className="input"
+          type="password"
+          variant="faded"
+          radius="sm"
+          label="Password"
+          onValueChange={(e) => {
+            setConfirmPasswordInput(validatePassword(e));
+          }}
+          isInvalid={
+            !confirmPasswordInput.isValid &&
+            (confirmPasswordInput.value != "" || submitted)
+          }
+          errorMessage={
+            confirmPasswordInput.value == passwordInput.value
+              ? confirmPasswordInput.message
+              : "Passwords do not match"
+          }
         />
         <Button
           className="w-full bg-secondary text-primary font-bold"
