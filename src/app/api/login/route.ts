@@ -51,8 +51,12 @@ export async function POST(req: NextRequest) {
     }
 
     const response = NextResponse.json(
-      { message: "Logged in with accessToken", token: tokens.accessToken, },
-      { status: 200 },
+      {
+        message: "Logged in with accessToken",
+        token: tokens.accessToken,
+        userId: user.id,
+      },
+      { status: 200 }
     );
 
     response.cookies.set("token", tokens.refreshToken, {
@@ -86,8 +90,6 @@ export async function GET(req: NextRequest) {
     if (!process.env.JWT_ACCESS_SECRET) {
       throw new Error("JWT_ACCESS_SECRET is not defined");
     }
-
-    console.log("refreshToken: " + req.cookies.get("token"));
 
     const newAccessToken = await authService.refreshAccessToken(
       req.cookies.get("token")?.value as string
