@@ -27,6 +27,10 @@ body {
   }
 }
 
+input {
+  -webkit-text-fill-color: var(--primary) !important;
+}
+
 /* Embla Carousel */
 
 .embla {

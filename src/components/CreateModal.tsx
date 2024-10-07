@@ -13,12 +13,9 @@ export default function CreateModal({
 }: {
   setIsModalOpen: (value: boolean) => void;
 }) {
-  const router = useRouter();
-
   const [submitted, setSubmitted] = useState(false);
-  const [imgUrl, setImgUrl] = useState("");
 
-  let movie = {
+  const [movie, setMovie] = useState({
     userId: parseInt(localStorage.getItem("userId") as string),
     title: "",
     description: "",
@@ -26,20 +23,10 @@ export default function CreateModal({
     genre: "",
     releaseDate: "",
     imageUrl: "",
-  };
+  });
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
-    movie = {
-      userId: parseInt(localStorage.getItem("userId") as string),
-      title: e.target.title.value,
-      description: e.target.description.value,
-      director: e.target.director.value,
-      genre: e.target.genre.value,
-      releaseDate: e.target.releaseDate.value,
-      imageUrl: e.target.imageUrl.value,
-    };
 
     if (
       movie.title === "" ||
@@ -72,11 +59,11 @@ export default function CreateModal({
       >
         <h1 className="mb-7 text-4xl font-bold text-center">Add Movie</h1>
         <div className="flex gap-4">
-          {imgUrl === "" ? (
+          {movie.imageUrl === "" ? (
             <PlaceholderImage className="w-32 h-32" />
           ) : (
             <img
-              src={imgUrl}
+              src={movie.imageUrl}
               alt="Img"
               className="rounded-md w-32 h-32 object-cover"
             />
@@ -90,6 +77,9 @@ export default function CreateModal({
                 type="text"
                 name="title"
                 label="Title"
+                onChange={(e) =>
+                  setMovie((prev) => ({ ...prev, title: e.target.value }))
+                }
                 isInvalid={submitted && movie.title === ""}
                 errorMessage="Title is required"
                 className="col-start-1 col-end-2 row-start-1 row-end-2"
@@ -98,6 +88,9 @@ export default function CreateModal({
                 type="date"
                 name="releaseDate"
                 label="Release Date"
+                onChange={(e) =>
+                  setMovie((prev) => ({ ...prev, releaseDate: e.target.value }))
+                }
                 isInvalid={submitted && movie.releaseDate === ""}
                 errorMessage="Release Date is required"
                 className="col-start-2 col-end-3 row-start-1 row-end-2"
@@ -106,7 +99,9 @@ export default function CreateModal({
                 type="text"
                 name="imageUrl"
                 label="Image URL"
-                onChange={(e) => setImgUrl(e.target.value)}
+                onChange={(e) =>
+                  setMovie((prev) => ({ ...prev, imageUrl: e.target.value }))
+                }
                 isInvalid={submitted && movie.imageUrl === ""}
                 errorMessage="Image URL is required"
                 className="col-start-1 col-end-3 row-start-2 row-end-3"
@@ -115,6 +110,9 @@ export default function CreateModal({
                 type="text"
                 name="description"
                 label="Description"
+                onChange={(e) =>
+                  setMovie((prev) => ({ ...prev, description: e.target.value }))
+                }
                 isInvalid={submitted && movie.description === ""}
                 errorMessage="Description is required"
                 className="col-start-1 col-end-3 row-start-3 row-end-5"
@@ -133,6 +131,9 @@ export default function CreateModal({
                 type="text"
                 name="director"
                 label="Director"
+                onChange={(e) =>
+                  setMovie((prev) => ({ ...prev, director: e.target.value }))
+                }
                 isInvalid={submitted && movie.director === ""}
                 errorMessage="Director Date is required"
                 className="col-start-1 col-end-2 row-start-5 row-end-6"
@@ -141,6 +142,9 @@ export default function CreateModal({
                 type="text"
                 name="genre"
                 label="Genre"
+                onChange={(e) =>
+                  setMovie((prev) => ({ ...prev, genre: e.target.value }))
+                }
                 isInvalid={submitted && movie.genre === ""}
                 errorMessage="Genre is required"
                 className="col-start-2 col-end-3 row-start-5 row-end-6"
