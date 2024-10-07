@@ -8,6 +8,7 @@ import { useState } from "react";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="font-[family-name:var(--font-geist-sans)] text-primary">
       <main className="bg-background h-auto">
@@ -31,7 +32,7 @@ export default function Home() {
           className="w-full h-full inset-0 fixed bg-black bg-opacity-70"
           onClick={() => setIsModalOpen(false)}
         >
-          <CreateModal />
+          <CreateModal setIsModalOpen={setIsModalOpen} />
         </div>
       )}
     </div>

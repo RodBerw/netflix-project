@@ -14,14 +14,10 @@ interface Props {
 }
 
 export default function Section({ sectionName }: Props) {
-  // Embla reference for carousel
-  const [emblaRef] = useEmblaCarousel();
-
   const [movies, setMovies] = useState<movieDTO[]>([]);
 
   useEffect(() => {
-    //const loggedUserId = localStorage.getItem("userId");
-    const loggedUserId = 1;
+    const loggedUserId = localStorage.getItem("userId");
 
     api
       .get(`/api/movie/?userId=${loggedUserId}`)

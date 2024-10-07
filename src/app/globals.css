@@ -94,12 +94,20 @@ body {
   color: var(--primary);
 }
 
-.embla__button__right:hover{
-  background: linear-gradient(-90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0,0,0,0) 100%);
+.embla__button__right:hover {
+  background: linear-gradient(
+    -90deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
-.embla__button__left:hover{
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0,0,0,0) 100%);
+.embla__button__left:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .embla__button__svg {

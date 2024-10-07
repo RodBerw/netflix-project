@@ -53,7 +53,7 @@ class AuthService {
         process.env.JWT_ACCESS_SECRET,
         { expiresIn: "15m" }
       );
-      return { accessToken: newAccessToken };
+      return newAccessToken;
     }
   }
 }
