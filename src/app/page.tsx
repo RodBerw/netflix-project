@@ -11,9 +11,11 @@ export default function Home() {
 
   return (
     <div className="font-[family-name:var(--font-geist-sans)] text-primary">
+      <Header />
       <main className="bg-background h-auto">
-        <Header />
-        <div className="flex flex-col w-full font-bold">
+        <div className="flex flex-col gap-20 w-full font-bold ">
+          <Section sectionName="All" />
+          <Section sectionName="All" />
           <Section sectionName="All" />
         </div>
         <Button
