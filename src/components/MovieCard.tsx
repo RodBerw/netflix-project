@@ -1,11 +1,12 @@
 "use client";
 
+import { movieDTO } from "@/app/dtos/movieDTO";
 import { waitForSeconds } from "@/utils/utils";
 import React, { useState } from "react";
 
 interface MovieCardProps {
   imageUrl: string;
-  movieTitle: string;
+  movie: movieDTO;
   setShowArrows: React.Dispatch<React.SetStateAction<boolean>>;
   xOffset: number;
   setFocusedIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -14,7 +15,7 @@ interface MovieCardProps {
 
 export default function MovieCard({
   imageUrl,
-  movieTitle,
+  movie,
   setShowArrows,
   xOffset,
   setFocusedIndex,
@@ -43,7 +44,7 @@ export default function MovieCard({
     <div
       className={`relative transform transition-all duration-300 ease-in-out object-cover overflow-hidden rounded-md  ${
         isHovered
-          ? "scale-150 z-40 h-60"
+          ? "scale-150 z-40 h-72"
           : "scale-100 z-10 h-40 hover:cursor-pointer"
       }`}
       style={{
@@ -65,14 +66,18 @@ export default function MovieCard({
         <img src={imageUrl} alt="Movie Image" className=" w-full" />
       </div>
       <div
-        className={`absolute top-0 left-0 w-full h-full bg-black bg-opacity-80 text-white p-4 transition-opacity duration-300 ${
+        className={`absolute bottom-0 left-0 w-full bg-background text-white p-4 transition-opacity duration-300 ${
           isHovered ? "opacity-100" : "opacity-0"
         }`}
       >
-        <h2 className="text-xl font-bold mb-2">{movieTitle}</h2>
-        <p className="text-sm mb-2">asdasd</p>
-        <p className="text-xs mb-1">Genre: asd</p>
-        <p className="text-xs">Release Date: asdasd</p>
+        <div className="flex justify-start gap-[2%]">
+          <img className="w-[12%]" src="/icons/Play.svg" />
+          <img className="w-[12%]" src="/icons/Add.svg" />
+          <img className="w-[12%] ml-auto" src="/icons/Expand.png" />
+        </div>
+        <h2 className="text-xl font-bold mb-2">{movie.title}</h2>
+        <p className="text-xs mb-1">Seaon 1</p>
+        <p className="text-xs">{movie.genre}</p>
       </div>
     </div>
   );

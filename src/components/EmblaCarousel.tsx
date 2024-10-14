@@ -65,7 +65,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                 key={index}
               >
                 <MovieCard
-                  movieTitle={movies[i]?.title}
+                  movie={movies[i]}
                   imageUrl={movies[i]?.imageUrl}
                   setShowArrows={setShowArrows}
                   xOffset={
