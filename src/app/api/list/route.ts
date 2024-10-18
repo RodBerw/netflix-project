@@ -24,6 +24,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const user = JSON.parse(req.headers.get("user") as string);
+    const listToUpdate = await listService.getListFromUserId(user.id);
+
+    if (!user || (listToUpdate && user.id !== listToUpdate.userId)) {
+      return NextResponse.json(
+        { message: "You are not authorized to update this list" },
+        { status: 401 }
+      );
+    }
+
     await listService.addMovieToList(userId, movieId);
     return NextResponse.json(
       { message: "Movie added to list successfully" },
@@ -47,6 +57,16 @@ export async function DELETE(req: NextRequest) {
   }
 
   try {
+    const user = JSON.parse(req.headers.get("user") as string);
+    const listToDelete = await listService.getListFromUserId(user.id);
+
+    if (!user || (listToDelete && user.id !== listToDelete.userId)) {
+      return NextResponse.json(
+        { message: "You are not authorized to delete this list" },
+        { status: 401 }
+      );
+    }
+
     await listService.removeMovieFromList(userId, movieId);
     return NextResponse.json(
       { message: "Movie removed from list successfully" },

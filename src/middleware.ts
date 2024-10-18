@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
-import {jwtVerify} from "jose";
+import { jwtVerify } from "jose";
 
 export async function middleware(req: NextRequest) {
   // Allow register and login without token
-  if((req.nextUrl.toString().includes("/api/user") && req.method === "POST") ||
-   req.nextUrl.toString().includes("/api/login")) {
+  if (
+    (req.nextUrl.toString().includes("/api/user") && req.method === "POST") ||
+    req.nextUrl.toString().includes("/api/login")
+  ) {
     return NextResponse.next();
   }
 
@@ -18,19 +20,27 @@ export async function middleware(req: NextRequest) {
   // Check if JWT_ACCESS_SECRET is defined
   const secret = process.env.JWT_ACCESS_SECRET;
   if (!secret) {
-    return NextResponse.json({ message: "Missing JWT_ACCESS_SECRET" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Missing JWT_ACCESS_SECRET" },
+      { status: 500 }
+    );
   }
 
   // Verify access token
   try {
-    const {payload} = await jwtVerify(token, new TextEncoder().encode(secret)) as {payload: any};
+    const { payload } = (await jwtVerify(
+      token,
+      new TextEncoder().encode(secret)
+    )) as { payload: any };
     (req as any).user = payload;
-    return NextResponse.next();
+    const resp = NextResponse.next();
+    resp.headers.set("user", JSON.stringify(payload));
+    return resp;
   } catch (err) {
     return NextResponse.json({ message: "Invalid token" }, { status: 401 });
   }
-};
+}
 
 export const config = {
   matcher: "/api/:path*",
-}
+};

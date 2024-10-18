@@ -2,6 +2,8 @@ import authService from "@/app/services/authService";
 import userService from "@/app/services/userService";
 import { NextRequest, NextResponse } from "next/server";
 
+//Create tokens
+
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
@@ -74,6 +76,8 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+//Refresh access token
 
 export async function GET(req: NextRequest) {
   try {
