@@ -49,14 +49,14 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
 
   return (
     <section className="embla !m-0 " style={{ pointerEvents: "none" }}>
-      <div className="embla__viewport " ref={emblaRef}>
+      <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
           {movies.map((movie, index) => {
             const i = movieIndex;
             movieIndex = (movieIndex + 1) % movies.length;
             return (
               <div
-                className="embla__slide flex flex-nowrap w-full"
+                className="embla__slide flex flex-nowrap w-full h-32"
                 style={{
                   flex: `0 0 ${100 / slidesCount.length}%`,
                   gap: "2px",
@@ -69,9 +69,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                   imageUrl={movies[i]?.imageUrl}
                   setShowArrows={setShowArrows}
                   xOffset={
-                    (index + slidesCount.length) % slidesCount.length == 0
-                      ? 25
-                      : 0
+                    // (index + slidesCount.length) % slidesCount.length == 0
+                    //   ? 25
+                    //   : 0
+                    0
                   }
                   setFocusedIndex={setFocusedIndex}
                   index={index}

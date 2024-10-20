@@ -1,7 +1,9 @@
 "use client";
 
 import { movieDTO } from "@/app/dtos/movieDTO";
+import eventEmitter from "@/utils/eventEmitter";
 import { waitForSeconds } from "@/utils/utils";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 interface MovieCardProps {
@@ -29,8 +31,7 @@ export default function MovieCard({
     setAbortController(controller);
 
     try {
-      await waitForSeconds(1, controller).then(() => {
-        console.log("Coroutine finished");
+      await waitForSeconds(0.5, controller).then(() => {
         setFocusedIndex(index);
         setShowArrows(false);
         setIsHovered(true);
@@ -40,19 +41,20 @@ export default function MovieCard({
     }
   };
 
+  const router = useRouter();
+
   return (
     <div
-      className={`relative transform transition-all duration-300 ease-in-out object-cover overflow-hidden rounded-md  ${
+      className={`absolute transform transition-all duration-300 ease-in-out object-cover overflow-hidden rounded-md  ${
         isHovered
           ? "scale-150 z-40 h-72"
-          : "scale-100 z-10 h-40 hover:cursor-pointer"
+          : "scale-100 z-10 h-32 hover:cursor-pointer"
       }`}
       style={{
         pointerEvents: "auto",
         left: `${isHovered ? xOffset : 0}%`,
       }}
       onMouseEnter={() => {
-        console.log("Mouse entered movie card");
         handleMovieHover();
       }}
       onMouseLeave={() => {
@@ -73,7 +75,13 @@ export default function MovieCard({
         <div className="flex justify-start gap-[2%]">
           <img className="w-[12%]" src="/icons/Play.svg" />
           <img className="w-[12%]" src="/icons/Add.svg" />
-          <img className="w-[12%] ml-auto" src="/icons/Expand.png" />
+          <img
+            onClick={() => {
+              router.push(`/?id=${movie.id}`);
+            }}
+            className="w-[12%] ml-auto hover:brightness-110 cursor-pointer"
+            src="/icons/Expand.png"
+          />
         </div>
         <h2 className="text-xl font-bold mb-2">{movie.title}</h2>
         <p className="text-xs mb-1">Seaon 1</p>
