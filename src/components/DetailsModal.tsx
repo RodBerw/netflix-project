@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import PlaceholderImage from "../../public/icons/PlaceholderImage.svg";
 import eventEmitter from "@/utils/eventEmitter";
 import { movieDTO } from "@/app/dtos/movieDTO";
+import { Button } from "@nextui-org/button";
+import SimplePlay from "../../public/icons/SimplePlay.svg";
+import Add from "../../public/icons/Add.svg";
+import Close from "../../public/icons/Close.svg";
+import { useRouter } from "next/navigation";
 
 interface Episode {
   id: number;
@@ -19,6 +24,7 @@ export default function DetailsModal({
   setIsModalOpen: (value: boolean) => void;
   movie: movieDTO;
 }) {
+  const router = useRouter();
   const [selectedEp, setSelectedEp] = useState(1);
   const [episodes, setEpisodes] = useState<Episode[]>([
     {
@@ -72,20 +78,63 @@ export default function DetailsModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className="flex flex-col w-full h-[400px] bg-cover bg-center rounded-t-md"
+          className="relative w-full h-[480px] bg-cover bg-center rounded-t-md"
           style={{ backgroundImage: `url(${movie.imageUrl})` }}
         >
-          <div></div>
-        </div>
-        <div className="flex flex-col w-full p-12">
-          <p className="text-gray-400 inline-block">
-            {new Date(movie.releaseDate).getFullYear()} 10 episodes
-          </p>
-          <div className="text-gray-400 w-[35px] bg-gray-800 border-1 border-gray-400 p-1 rounded-md">
-            12+
+          <div className="absolute right-0 m-2">
+            <Close
+              width="48px"
+              height="48px"
+              className="cursor-pointer"
+              onClick={() => {
+                setIsModalOpen(false), router.push("/");
+              }}
+            />
           </div>
-          <p className="mt-6">{movie.description}</p>
-          <h1 className="font-bold text-xl mt-8 mb-4">Episodes</h1>
+          <div
+            className="w-full h-12 absolute bottom-0"
+            style={{
+              background:
+                "linear-gradient(0deg, var(--background), transparent)",
+            }}
+          ></div>
+          <div className="w-[40%] absolute left-12 bottom-[5%] flex flex-col gap-1 text-6xl font-bold">
+            <h1 className="mb-6">{movie.title}</h1>
+            <div className="flex gap-2 mb-10">
+              <Button
+                radius="sm"
+                className="pl-4 pr-5 pb-1 pt-1 h-auto bg-white font-semibold"
+                startContent={<SimplePlay width="25px" height="25px" />}
+              >
+                Watch
+              </Button>
+              <Add width="32px" height="32px" />
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-[2fr_1fr] gap-8">
+          <div className="flex flex-col w-full p-12 pt-2 pb-0">
+            <p className="text-gray-300 inline-block">
+              {new Date(movie.releaseDate).getFullYear()} 10 episodes
+            </p>
+            <div className="text-gray-400 w-[35px] bg-gray-800 border-1 border-gray-400 p-1 rounded-md">
+              12+
+            </div>
+            <p className="mt-6 text-[16px]">{movie.description}</p>
+          </div>
+          <div className="flex flex-col text-[14px] gap-[7px]">
+            <div>
+              <p className="text-[#777777] inline-block">Director:</p>
+              <p className="text-white inline-block ml-1">{movie.director}</p>
+            </div>
+            <div>
+              <p className="text-[#777777] inline-block">Genre:</p>
+              <p className="text-white inline-block ml-1">{movie.genre}</p>
+            </div>
+          </div>
+        </div>
+        <div className="w-full pl-12 pr-12">
+          <h1 className="font-bold text-xl mt-12 mb-4">Episodes</h1>
           <div className="flex flex-col">
             {episodes.map((episode, key) => {
               return (
