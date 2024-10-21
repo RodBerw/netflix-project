@@ -36,9 +36,7 @@ export default function MovieCard({
         setShowArrows(false);
         setIsHovered(true);
       });
-    } catch (err: any) {
-      console.log(err.message);
-    }
+    } catch (err: any) {}
   };
 
   const router = useRouter();

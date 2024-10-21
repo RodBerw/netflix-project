@@ -54,6 +54,18 @@ export default function Home() {
     }
   }, [searchParams.get("id")]);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isModalOpen]);
+
   return (
     <div className="font-[family-name:var(--font-geist-sans)] text-primary overflow-x-hidden">
       <Header />
