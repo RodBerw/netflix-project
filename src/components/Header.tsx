@@ -17,12 +17,50 @@ export default function Header() {
         <div className="md:hidden flex">
           <Select />
         </div>
-        <ul className="hidden md:flex md:text-xs lg:text-base space-x-4 text-white">
-          <li>Home</li>
-          <li>Series</li>
-          <li>Films</li>
-          <li>Latest</li>
-          <li>My List</li>
+        <ul className="hidden md:flex text-[1vw] space-x-4 text-white">
+          <li
+            className={`${
+              window.location.pathname == "/" ? "font-bold" : "font-normal"
+            }`}
+          >
+            Home
+          </li>
+          <li
+            className={`${
+              window.location.pathname == "/Series"
+                ? "font-bold"
+                : "font-normal"
+            }`}
+          >
+            Series
+          </li>
+          <li
+            className={`${
+              window.location.pathname == "/movies"
+                ? "font-bold"
+                : "font-normal"
+            }`}
+          >
+            Films
+          </li>
+          <li
+            className={`${
+              window.location.pathname == "/latest"
+                ? "font-bold"
+                : "font-normal"
+            }`}
+          >
+            Latest
+          </li>
+          <li
+            className={`${
+              window.location.pathname == "/mylist"
+                ? "font-bold"
+                : "font-normal"
+            }`}
+          >
+            My List
+          </li>
         </ul>
       </div>
       <div className="min-w-24 flex justify-end w-1/3 space-x-4">

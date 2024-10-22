@@ -1,10 +1,13 @@
 "use client";
 
+import { listDTO } from "@/app/dtos/listDTO";
 import { movieDTO } from "@/app/dtos/movieDTO";
+import { userDTO } from "@/app/dtos/userDTO";
+import api from "@/utils/configAxios";
 import eventEmitter from "@/utils/eventEmitter";
 import { waitForSeconds } from "@/utils/utils";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface MovieCardProps {
   imageUrl: string;
@@ -40,6 +43,14 @@ export default function MovieCard({
   };
 
   const router = useRouter();
+  const [userId, setUserId] = useState(0);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(parseInt(storedUserId));
+    }
+  }, []);
 
   return (
     <div
@@ -72,7 +83,20 @@ export default function MovieCard({
       >
         <div className="flex justify-start gap-[2%]">
           <img className="w-[12%]" src="/icons/Play.svg" />
-          <img className="w-[12%]" src="/icons/Add.svg" />
+          <img
+            onClick={async () => {
+              const list = (await api.get(
+                `/list/?userId=${userId}`
+              )) as listDTO;
+
+              await api.post("/list", {
+                userId: userId,
+                moviesId: [...list.moviesId, movie.id],
+              });
+            }}
+            className="w-[12%]"
+            src="/icons/Add.svg"
+          />
           <img
             onClick={() => {
               router.push(`/?id=${movie.id}`);

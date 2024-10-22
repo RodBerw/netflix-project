@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import listService from "@/app/services/listService";
 
 export async function GET(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get("id");
+  const userId = req.nextUrl.searchParams.get("userId");
   if (userId) {
     const list = await listService.getListFromUserId(parseInt(userId));
     return NextResponse.json(list, { status: 200 });
