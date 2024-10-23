@@ -20,14 +20,14 @@ export default function Header() {
         <ul className="hidden md:flex text-[1vw] space-x-4 text-white">
           <li
             className={`${
-              window.location.pathname == "/" ? "font-bold" : "font-normal"
+              window?.location.pathname == "/" ? "font-bold" : "font-normal"
             }`}
           >
             Home
           </li>
           <li
             className={`${
-              window.location.pathname == "/Series"
+              window?.location.pathname == "/Series"
                 ? "font-bold"
                 : "font-normal"
             }`}
@@ -36,7 +36,7 @@ export default function Header() {
           </li>
           <li
             className={`${
-              window.location.pathname == "/movies"
+              window?.location.pathname == "/movies"
                 ? "font-bold"
                 : "font-normal"
             }`}
@@ -45,7 +45,7 @@ export default function Header() {
           </li>
           <li
             className={`${
-              window.location.pathname == "/latest"
+              window?.location.pathname == "/latest"
                 ? "font-bold"
                 : "font-normal"
             }`}
@@ -54,7 +54,7 @@ export default function Header() {
           </li>
           <li
             className={`${
-              window.location.pathname == "/mylist"
+              window?.location.pathname == "/mylist"
                 ? "font-bold"
                 : "font-normal"
             }`}

@@ -20,7 +20,7 @@ List.init(
       allowNull: false,
     },
     moviesId: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      type: DataTypes.JSON,
       allowNull: true,
     },
   },

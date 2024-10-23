@@ -24,24 +24,47 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const user = JSON.parse(req.headers.get("user") as string);
-    const listToUpdate = await listService.getListFromUserId(user.id);
+    await listService.createList(userId, movieId);
+    return NextResponse.json(
+      { message: "List created successfully" },
+      { status: 201 }
+    );
+  } catch (err: any) {
+    return NextResponse.json(
+      { message: "Error while creating list: " + err.message },
+      { status: 500 }
+    );
+  }
+}
 
-    if (!user || (listToUpdate && user.id !== listToUpdate.userId)) {
+export async function PUT(req: NextRequest) {
+  const { userId, movieId } = await req.json();
+  if (!userId || !movieId) {
+    return NextResponse.json(
+      { message: "userId and movieId are required" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const user = JSON.parse(req.headers.get("user") as string);
+    const listToUpdateId = req.nextUrl.searchParams.get("id");
+
+    if (!user || (listToUpdateId && user.id !== parseInt(listToUpdateId))) {
       return NextResponse.json(
         { message: "You are not authorized to update this list" },
         { status: 401 }
       );
     }
 
-    await listService.addMovieToList(userId, movieId);
+    await listService.updateList(userId, movieId);
     return NextResponse.json(
-      { message: "Movie added to list successfully" },
-      { status: 201 }
+      { message: "List updated successfully" },
+      { status: 200 }
     );
   } catch (err: any) {
     return NextResponse.json(
-      { message: "Error while adding movie to list: " + err.message },
+      { message: "Error while updating list: " + err.message },
       { status: 500 }
     );
   }

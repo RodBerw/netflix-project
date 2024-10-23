@@ -85,16 +85,28 @@ export default function MovieCard({
           <img className="w-[12%]" src="/icons/Play.svg" />
           <img
             onClick={async () => {
-              const list = (await api.get(
-                `/list/?userId=${userId}`
-              )) as listDTO;
+              let list: listDTO | null = null;
 
-              await api.post("/list", {
-                userId: userId,
-                moviesId: [...list.moviesId, movie.id],
-              });
+              try {
+                const response = await api.get(`/api/list/?userId=${userId}`);
+                list = response.data as listDTO;
+              } catch (err: any) {
+                console.log(err);
+              }
+
+              if (!list) {
+                await api.post("/api/list", {
+                  userId: userId,
+                  movieId: movie.id,
+                });
+              } else {
+                await api.put(`/api/list/?id=${list.id}`, {
+                  userId: userId,
+                  movieId: movie.id,
+                });
+              }
             }}
-            className="w-[12%]"
+            className="w-[12%] hover:cursor-pointer"
             src="/icons/Add.svg"
           />
           <img

@@ -6,26 +6,28 @@ class ListService {
     return await List.findOne({ where: { userId } });
   }
 
-  async addMovieToList(userId: number, movieId: number) {
-    const list = await List.findOne({ where: { userId } });
+  async createList(userId: number, movieId: number) {
+    return await List.create({ userId, moviesId: [movieId] } as listDTO);
+  }
+
+  async updateList(id: number, movieId: number) {
+    const list = await List.findOne({ where: { id } });
 
     if (list) {
       return await List.update(
         { moviesId: [...list.moviesId, movieId] },
-        { where: { userId } }
+        { where: { id } }
       );
-    } else {
-      return await List.create({ userId, moviesId: [movieId] } as listDTO);
     }
   }
 
-  async removeMovieFromList(userId: number, movieId: number) {
-    const list = await List.findOne({ where: { userId } });
+  async removeMovieFromList(id: number, movieId: number) {
+    const list = await List.findOne({ where: { id } });
 
     if (list) {
       return await List.update(
-        { moviesId: list.moviesId.filter((id) => id !== movieId) },
-        { where: { userId } }
+        { moviesId: list.moviesId.filter((itemId) => itemId !== movieId) },
+        { where: { id } }
       );
     } else {
       return { message: "List not found" };
