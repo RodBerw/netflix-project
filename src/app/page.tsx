@@ -24,6 +24,7 @@ export default function Home() {
     genre: "",
     releaseDate: new Date(),
     imageUrl: "",
+    type: "",
   });
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,6 +40,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    console.log(searchParams.get("add"));
+    if (searchParams.get("add") === "true") {
+      setModal("create");
+      setIsModalOpen(true);
+      return;
+    }
+
     const movieId = parseInt(searchParams.get("id") as string);
 
     if (isNaN(movieId)) return;
@@ -52,7 +60,7 @@ export default function Home() {
     } catch (err) {
       console.error(err);
     }
-  }, [searchParams.get("id")]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -68,12 +76,11 @@ export default function Home() {
 
   return (
     <div className="font-[family-name:var(--font-geist-sans)] text-primary overflow-x-hidden">
-      <Header />
       <main className="bg-background h-auto">
         <div className="flex flex-col gap-20 w-full font-bold">
-          <Section sectionName="All" />
-          <Section sectionName="All" />
-          <Section sectionName="All" />
+          <Section sectionName="All" moviesProps={[]} useMoviesProps={false} />
+          <Section sectionName="All" moviesProps={[]} useMoviesProps={false} />
+          <Section sectionName="All" moviesProps={[]} useMoviesProps={false} />
         </div>
         <Button
           type="button"
@@ -82,8 +89,7 @@ export default function Home() {
           radius="sm"
           color="default"
           onClick={() => {
-            setModal("create");
-            setIsModalOpen(true);
+            router.push(`/?add=${true}`);
           }}
         >
           Add Movie

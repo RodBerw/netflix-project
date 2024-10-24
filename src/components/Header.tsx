@@ -1,11 +1,14 @@
-"use-client";
+"use client";
 
 import Search from "../../public/icons/search.svg";
 import Notification from "../../public/icons/notification.svg";
 import Profile from "../../public/icons/profile.svg";
 import Select from "./Select";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
+  if (pathname == "/login" || pathname == "/register") return null;
   return (
     <header className="p-4 lg:pl-10 lg:pr-10 w-full flex justify-between items-center bg-gradient-to-b from-black to-background">
       <div className="min-w-40 flex w-2/3 items-center space-x-4">
@@ -18,48 +21,28 @@ export default function Header() {
           <Select />
         </div>
         <ul className="hidden md:flex text-[1vw] space-x-4 text-white">
-          <li
-            className={`${
-              window?.location.pathname == "/" ? "font-bold" : "font-normal"
-            }`}
-          >
-            Home
+          <li className={`${pathname == "/" ? "font-bold" : "font-normal"}`}>
+            <a href="/">Home</a>
           </li>
           <li
-            className={`${
-              window?.location.pathname == "/Series"
-                ? "font-bold"
-                : "font-normal"
-            }`}
+            className={`${pathname == "/Series" ? "font-bold" : "font-normal"}`}
           >
-            Series
+            <a href="/browse/?type=series">TV Shows</a>
           </li>
           <li
-            className={`${
-              window?.location.pathname == "/movies"
-                ? "font-bold"
-                : "font-normal"
-            }`}
+            className={`${pathname == "/movies" ? "font-bold" : "font-normal"}`}
           >
-            Films
+            <a href="/browse/?type=movie">Movies</a>
           </li>
           <li
-            className={`${
-              window?.location.pathname == "/latest"
-                ? "font-bold"
-                : "font-normal"
-            }`}
+            className={`${pathname == "/latest" ? "font-bold" : "font-normal"}`}
           >
-            Latest
+            <a href="/latest">New & Popular</a>
           </li>
           <li
-            className={`${
-              window?.location.pathname == "/mylist"
-                ? "font-bold"
-                : "font-normal"
-            }`}
+            className={`${pathname == "/mylist" ? "font-bold" : "font-normal"}`}
           >
-            My List
+            <a href="/browse/?search=my-list">My List</a>
           </li>
         </ul>
       </div>

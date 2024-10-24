@@ -11,18 +11,29 @@ import api from "@/utils/configAxios";
 
 interface Props {
   sectionName: string;
+  moviesProps: movieDTO[];
+  useMoviesProps: boolean;
 }
 
-export default function Section({ sectionName }: Props) {
+export default function Section({
+  sectionName,
+  moviesProps,
+  useMoviesProps,
+}: Props) {
   const [movies, setMovies] = useState<movieDTO[]>([]);
   const [showArrows, setShowArrows] = useState(false);
   const [zIndex, setZIndex] = useState(0);
 
   useEffect(() => {
+    if (useMoviesProps) {
+      setMovies(moviesProps);
+      return;
+    }
+
     const loggedUserId = localStorage.getItem("userId");
 
     api
-      .get(`/api/movie/?userId=${loggedUserId}`)
+      .get(`/api/movie/`)
       .then((res) => {
         setMovies(res.data);
       })
