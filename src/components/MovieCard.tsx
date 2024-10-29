@@ -60,8 +60,8 @@ export default function MovieCard({
     <div
       className={`transform w-full transition-all duration-300 ease-in-out object-cover overflow-hidden rounded-md  ${
         isHovered
-          ? "scale-150 z-40 h-72"
-          : "scale-100 z-10 h-32 hover:cursor-pointer"
+          ? "scale-150 z-40 h-[250%]"
+          : "scale-100 z-10 h-[125%] hover:cursor-pointer"
       }`}
       style={{
         pointerEvents: "auto",
@@ -78,7 +78,7 @@ export default function MovieCard({
       }}
     >
       <div className="flex h-full items-center ">
-        <img src={imageUrl} alt="Movie Image" className=" w-full" />
+        <img src={imageUrl} alt="Movie Image" className="w-full" />
       </div>
       <div
         className={`absolute bottom-0 left-0 w-full bg-background text-white p-4 transition-opacity duration-300 ${

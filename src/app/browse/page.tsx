@@ -92,10 +92,7 @@ export default function Browse() {
   if (type) {
     return (
       <div className="w-full overflow-hidden">
-        <Banner
-          movies={movies}
-          title={type == "series" ? "TV Shows" : "Movies"}
-        />
+        <Banner movies={movies} />
         <div className="w-full flex flex-col gap-20 font-bold">
           <Section
             sectionName="Trending Now"
@@ -122,10 +119,7 @@ export default function Browse() {
     );
   } else if (search) {
     return (
-      <>
-        {search === "my-list" ? (
-          <h1 className="text-2xl font-bold ml-[4%] mt-4 mb-12">My List</h1>
-        ) : null}
+      <div className="pt-16">
         <div
           className={`w-[92%] ml-[4%] mr-[4%] relative grid gap-[0.25vw] flex-wrap`}
           style={{
@@ -135,7 +129,7 @@ export default function Browse() {
           {movies.map((movie, key) => (
             <div
               key={key}
-              className="w-full h-auto mb-16 relative"
+              className="w-full min-h-24 h-[7vw] mb-16 relative"
               style={{ zIndex: focusedIndex === key ? 20 : 0 }}
             >
               <MovieCard
@@ -149,7 +143,7 @@ export default function Browse() {
             </div>
           ))}
         </div>
-      </>
+      </div>
     );
   }
 }

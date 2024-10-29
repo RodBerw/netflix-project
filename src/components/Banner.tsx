@@ -9,10 +9,9 @@ import { ModalContext } from "./ModalContext";
 
 interface Props {
   movies: movieDTO[];
-  title: string;
 }
 
-export default function Banner({ movies, title }: Props) {
+export default function Banner({ movies }: Props) {
   const [bannerMovie, setBannerMovie] = useState<movieDTO>();
   const router = useRouter();
   const pathname = usePathname();
@@ -38,7 +37,7 @@ export default function Banner({ movies, title }: Props) {
   return (
     <div className="w-full h-[42vw] min-h-60 relative">
       <div
-        className="w-full h-[56.25vw] relative bg-center bg-cover"
+        className="w-full h-[50vw] relative bg-center bg-cover"
         style={{
           backgroundImage: `url(${bannerMovie?.imageUrl})`,
         }}
@@ -50,11 +49,6 @@ export default function Banner({ movies, title }: Props) {
           }}
         ></div>
       </div>
-      {title && (
-        <h1 className="absolute text-4xl font-bold text-white left-[4%] top-[.25vw] text-[3vw]">
-          {title}
-        </h1>
-      )}
       <div className="absolute w-[50%] h-full flex items-end left-[4%] bottom-[.5vw]">
         <div className="flex flex-col gap-1 text-6xl font-bold">
           <h1 className="w-full text-[clamp(24px,4vw,64px)]">
