@@ -15,7 +15,8 @@
 }
 
 body {
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   color: var(--primary);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
@@ -37,16 +38,19 @@ input {
   width: 100%;
   margin: auto;
   --slide-height: 19rem;
-  --slide-spacing: 0.5rem;
+  --slide-spacing: 0.25vw;
   --slide-size: 100%;
   position: relative;
 }
 .embla__viewport {
+  margin-left: -5%;
+  margin-right: -5%;
 }
 .embla__container {
   display: flex;
   touch-action: pan-y pinch-zoom;
-  margin-left: calc(var(--slide-spacing) * -1);
+  margin-left: calc(var(--slide-spacing));
+  /* gap: 0.32vw; */
 }
 .embla__slide {
   /* width: var(--slide-size); */
@@ -72,7 +76,7 @@ input {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
   gap: 0.6rem;
   align-items: center;
 }
@@ -96,6 +100,16 @@ input {
   justify-content: center;
   color: var(--primary);
   pointer-events: auto;
+}
+
+.embla__button__left {
+  position: absolute;
+  left: 0;
+}
+
+.embla__button__right {
+  position: absolute;
+  right: 0;
 }
 
 .embla__button__right:hover {

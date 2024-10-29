@@ -6,8 +6,9 @@ import { userDTO } from "@/app/dtos/userDTO";
 import api from "@/utils/configAxios";
 import eventEmitter from "@/utils/eventEmitter";
 import { waitForSeconds } from "@/utils/utils";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useContext, useEffect, useState } from "react";
+import { ModalContext } from "./ModalContext";
 
 interface MovieCardProps {
   imageUrl: string;
@@ -43,7 +44,10 @@ export default function MovieCard({
   };
 
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [userId, setUserId] = useState(0);
+  const modalContext = useContext(ModalContext);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -54,7 +58,7 @@ export default function MovieCard({
 
   return (
     <div
-      className={`absolute transform transition-all duration-300 ease-in-out object-cover overflow-hidden rounded-md  ${
+      className={`transform w-full transition-all duration-300 ease-in-out object-cover overflow-hidden rounded-md  ${
         isHovered
           ? "scale-150 z-40 h-72"
           : "scale-100 z-10 h-32 hover:cursor-pointer"
@@ -86,7 +90,6 @@ export default function MovieCard({
           <img
             onClick={async () => {
               let list: listDTO | null = null;
-
               try {
                 const response = await api.get(`/api/list/?userId=${userId}`);
                 list = response.data as listDTO;
@@ -100,7 +103,7 @@ export default function MovieCard({
                   movieId: movie.id,
                 });
               } else {
-                await api.put(`/api/list/?id=${list.id}`, {
+                await api.put(`/api/list/`, {
                   userId: userId,
                   movieId: movie.id,
                 });
@@ -111,7 +114,9 @@ export default function MovieCard({
           />
           <img
             onClick={() => {
-              router.push(`/?id=${movie.id}`);
+              modalContext.setSearch(searchParams.get("search") ?? "");
+              modalContext.setType(searchParams.get("type") ?? "");
+              router.push(`${pathname}/?id=${movie.id}`);
             }}
             className="w-[12%] ml-auto hover:brightness-110 cursor-pointer"
             src="/icons/Expand.png"

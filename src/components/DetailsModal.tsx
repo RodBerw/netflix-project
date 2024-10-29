@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import PlaceholderImage from "../../public/icons/PlaceholderImage.svg";
-import eventEmitter from "@/utils/eventEmitter";
+import { useState } from "react";
 import { movieDTO } from "@/app/dtos/movieDTO";
 import { Button } from "@nextui-org/button";
 import SimplePlay from "../../public/icons/SimplePlay.svg";
@@ -74,7 +72,7 @@ export default function DetailsModal({
   return (
     <div className="w-full h-full flex flex-col items-center overflow-auto">
       <div
-        className="bg-background w-[850px] mt-8 flex flex-col rounded-md"
+        className="bg-background w-[850px] z-[70] mt-8 flex flex-col rounded-md"
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -102,8 +100,7 @@ export default function DetailsModal({
             <h1 className="mb-6">{movie.title}</h1>
             <div className="flex gap-2 mb-10">
               <Button
-                radius="sm"
-                className="pl-4 pr-5 pb-1 pt-1 h-auto bg-white font-semibold"
+                className="pl-4 pr-5 pb-1 pt-1 h-auto rounded-md bg-white font-semibold"
                 startContent={<SimplePlay width="25px" height="25px" />}
               >
                 Watch

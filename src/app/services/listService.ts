@@ -10,13 +10,13 @@ class ListService {
     return await List.create({ userId, moviesId: [movieId] } as listDTO);
   }
 
-  async updateList(id: number, movieId: number) {
-    const list = await List.findOne({ where: { id } });
+  async updateList(userId: number, movieId: number) {
+    const list = await List.findOne({ where: { userId } });
 
     if (list) {
       return await List.update(
         { moviesId: [...list.moviesId, movieId] },
-        { where: { id } }
+        { where: { userId } }
       );
     }
   }

@@ -1,11 +1,8 @@
 "use client";
 
 import { movieDTO } from "@/app/dtos/movieDTO";
-import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
-import MovieCard from "./MovieCard";
-import useEmblaCarousel from "embla-carousel-react";
 import EmblaCarousel from "./EmblaCarousel";
 import api from "@/utils/configAxios";
 
@@ -29,8 +26,6 @@ export default function Section({
       setMovies(moviesProps);
       return;
     }
-
-    const loggedUserId = localStorage.getItem("userId");
 
     api
       .get(`/api/movie/`)

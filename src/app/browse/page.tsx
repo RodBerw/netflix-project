@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 import { movieDTO } from "../dtos/movieDTO";
 import api from "@/utils/configAxios";
 import MovieCard from "@/components/MovieCard";
+import Banner from "@/components/Banner";
 
 export default function Browse() {
   const [type, setType] = useState("");
   const [search, setSearch] = useState("");
   const [movies, setMovies] = useState<movieDTO[]>([]);
+  const [slidesCount, setSlidesCount] = useState(0);
 
   // Disabled
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -41,18 +43,17 @@ export default function Browse() {
                 const moviesId = res.data.moviesId;
 
                 // Create an array of promises to fetch each movie
-                const movieRequest = moviesId.map((movieId: number) =>
-                  api
-                    .get(`/api/movie/?id=${movieId}`)
-                    .then((res) => res.data as movieDTO)
+                const movieRequests = moviesId.map((movieId: number) =>
+                  api.get(`/api/movie/?id=${movieId}`).then((res) => {
+                    return res.data as movieDTO;
+                  })
                 );
 
                 // Wait for all promises to resolve and fill filteredMovies with the results
-                Promise.all(movieRequest)
+                Promise.all(movieRequests)
                   .then((filteredMovies: movieDTO[]) => {
                     setSearch(search);
                     setMovies(filteredMovies);
-                    console.log(movies);
                   })
                   .catch((error) => {
                     console.error("Error fetching movies:", error);
@@ -71,45 +72,84 @@ export default function Browse() {
       .catch((error) => {
         console.error("Error fetching movies:", error);
       });
+  }, [searchParams.get("type"), searchParams.get("search")]);
+
+  const slidesPerPage = 6;
+
+  useEffect(() => {
+    const handleResize = () => {
+      const count = Math.floor((slidesPerPage * innerWidth) / screen.width);
+      setSlidesCount(count);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (type) {
     return (
-      <div className="w-full flex flex-col gap-20 font-bold">
-        <Section
-          sectionName="Trending Now"
-          moviesProps={movies.sort(() => Math.random() - 0.5)}
-          useMoviesProps={true}
+      <div className="w-full overflow-hidden">
+        <Banner
+          movies={movies}
+          title={type == "series" ? "TV Shows" : "Movies"}
         />
-        <Section
-          sectionName="Recentrly Added"
-          moviesProps={movies.sort(() => Math.random() - 0.5)}
-          useMoviesProps={true}
-        />
-        <Section
-          sectionName="More"
-          moviesProps={movies.sort(() => Math.random() - 0.5)}
-          useMoviesProps={true}
-        />
+        <div className="w-full flex flex-col gap-20 font-bold">
+          <Section
+            sectionName="Trending Now"
+            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            useMoviesProps={true}
+          />
+          <Section
+            sectionName="Recently Added"
+            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            useMoviesProps={true}
+          />
+          <Section
+            sectionName="Chosen for you"
+            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            useMoviesProps={true}
+          />
+          <Section
+            sectionName="More"
+            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            useMoviesProps={true}
+          />
+        </div>
       </div>
     );
   } else if (search) {
     return (
-      <div className="w-full flex flex-col gap-20 font-bold">
-        <div className="w-full flex gap-[2%]">
+      <>
+        {search === "my-list" ? (
+          <h1 className="text-2xl font-bold ml-[4%] mt-4 mb-12">My List</h1>
+        ) : null}
+        <div
+          className={`w-[92%] ml-[4%] mr-[4%] relative grid gap-[0.25vw] flex-wrap`}
+          style={{
+            gridTemplateColumns: `repeat(${slidesCount}, 1fr)`,
+          }}
+        >
           {movies.map((movie, key) => (
-            <MovieCard
+            <div
               key={key}
-              movie={movie}
-              imageUrl={movie.imageUrl}
-              setFocusedIndex={setFocusedIndex}
-              setShowArrows={setShowArrows}
-              index={key}
-              xOffset={0}
-            />
+              className="w-full h-auto mb-16 relative"
+              style={{ zIndex: focusedIndex === key ? 20 : 0 }}
+            >
+              <MovieCard
+                movie={movie}
+                imageUrl={movie.imageUrl}
+                setFocusedIndex={setFocusedIndex}
+                setShowArrows={setShowArrows}
+                index={key}
+                xOffset={0}
+              />
+            </div>
           ))}
         </div>
-      </div>
+      </>
     );
   }
 }

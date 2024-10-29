@@ -21,23 +21,24 @@ type PropType = {
 const EmblaCarousel: React.FC<PropType> = (props) => {
   const { movies, options, showArrows, setShowArrows } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const [slidesCount, setSlidesCount] = useState<number[]>([]);
+  const [slidesCount, setSlidesCount] = useState(0);
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const [slided, setSlided] = useState(false);
 
   let movieIndex = 0;
-  let slidesPerPage = 6;
+  let slidesPerPage = 7;
 
   let {
     prevBtnDisabled,
     nextBtnDisabled,
     onPrevButtonClick,
     onNextButtonClick,
-  } = usePrevNextButtons(emblaApi, slidesCount.length);
+  } = usePrevNextButtons(emblaApi, slidesCount);
 
   useEffect(() => {
     const handleResize = () => {
       const count = Math.floor((slidesPerPage * innerWidth) / screen.width);
-      setSlidesCount(new Array(count).fill(0));
+      setSlidesCount(count);
     };
 
     handleResize();
@@ -49,7 +50,11 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
 
   return (
     <section className="embla !m-0 " style={{ pointerEvents: "none" }}>
-      <div className="embla__viewport" ref={emblaRef}>
+      <div
+        className="embla__viewport"
+        ref={emblaRef}
+        // style={{ marginLeft: `${slided ? "0" : "2%"}` }}
+      >
         <div className="embla__container">
           {movies.map((movie, index) => {
             const i = movieIndex;
@@ -58,8 +63,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               <div
                 className="embla__slide flex flex-nowrap w-full h-32"
                 style={{
-                  flex: `0 0 ${100 / slidesCount.length}%`,
-                  gap: "2px",
+                  flex: `0 0 ${100 / slidesCount}%`,
                   zIndex: focusedIndex === index ? 20 : 0,
                 }}
                 key={index}
@@ -86,12 +90,17 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
       {showArrows && (
         <div className="embla__controls">
           <div className="embla__buttons">
-            <PrevButton
-              onClick={onPrevButtonClick}
-              disabled={prevBtnDisabled}
-            />
+            {slided && (
+              <PrevButton
+                onClick={onPrevButtonClick}
+                disabled={prevBtnDisabled}
+              />
+            )}
             <NextButton
-              onClick={onNextButtonClick}
+              onClick={() => {
+                setSlided(true);
+                onNextButtonClick();
+              }}
               disabled={nextBtnDisabled}
             />
           </div>

@@ -48,11 +48,11 @@ export async function PUT(req: NextRequest) {
 
   try {
     const user = JSON.parse(req.headers.get("user") as string);
-    const listToUpdateId = req.nextUrl.searchParams.get("id");
+    const listToUpdate = await listService.getListFromUserId(user.id);
 
-    if (!user || (listToUpdateId && user.id !== parseInt(listToUpdateId))) {
+    if (!user || (listToUpdate && user.id !== listToUpdate.userId)) {
       return NextResponse.json(
-        { message: "You are not authorized to update this list" },
+        { message: "You are not authorized to delete this list" },
         { status: 401 }
       );
     }
