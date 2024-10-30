@@ -52,8 +52,19 @@ export default function Register() {
           password: passwordInput.value,
         })
         .then((res) => {
-          localStorage.setItem("token", res.data.token);
-          router.push("/");
+          if (res.status === 201) {
+            api
+              .post("/api/login", {
+                email: emailInput.value,
+                password: passwordInput.value,
+              })
+              .then((res) => {
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("userId", res.data.userId);
+                router.push("/");
+              });
+            router.push("/");
+          }
         })
         .catch((err) => {
           console.error(err);

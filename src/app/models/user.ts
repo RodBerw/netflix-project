@@ -2,6 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import { connection } from "../db/db";
 import { userDTO } from "../dtos/userDTO";
 import { Movie } from "./movie";
+import { List } from "./list";
 
 export class User extends Model<userDTO> implements userDTO {
   public id!: number;
@@ -39,3 +40,7 @@ User.init(
 // Set up the relationship between User and Movie
 User.hasMany(Movie, { foreignKey: "userId" });
 Movie.belongsTo(User, { foreignKey: "userId" });
+
+// Set up the relationship between User and List
+User.hasOne(List, { foreignKey: "userId" });
+List.belongsTo(User, { foreignKey: "userId" });

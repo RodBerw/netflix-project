@@ -42,6 +42,21 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
+    const user = JSON.parse(req.headers.get("user") as string);
+    const movieToUpdateId = req.nextUrl.searchParams.get("id");
+
+    if (
+      !user ||
+      (movieToUpdateId &&
+        user.id !==
+          (await movieService.getMovieById(parseInt(movieToUpdateId)))?.userId)
+    ) {
+      return NextResponse.json(
+        { message: "You are not authorized to update this movie" },
+        { status: 401 }
+      );
+    }
+
     await movieService.updateMovie(
       parseInt(req.nextUrl.searchParams.get("id") as string),
       await req.json()
@@ -57,6 +72,21 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const user = JSON.parse(req.headers.get("user") as string);
+    const movieToDeleteId = req.nextUrl.searchParams.get("id");
+
+    if (
+      !user ||
+      (movieToDeleteId &&
+        user.id !==
+          (await movieService.getMovieById(parseInt(movieToDeleteId)))?.userId)
+    ) {
+      return NextResponse.json(
+        { message: "You are not authorized to delete this movie" },
+        { status: 401 }
+      );
+    }
+
     await movieService.deleteMovie(
       parseInt(req.nextUrl.searchParams.get("id") as string)
     );

@@ -7,10 +7,12 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Select() {
   const [isHover, setIsHover] = useState(false);
+  const router = useRouter();
 
   return (
     <div
@@ -29,15 +31,41 @@ export default function Select() {
             variant="light"
             className="!bg-black !text-gray-400 hover:!text-white"
             key="new"
+            onClick={() => router.push("/")}
           >
-            New
+            Home
           </DropdownItem>
           <DropdownItem
             variant="light"
             className="!bg-black !text-gray-400 hover:!text-white"
             key="edit"
+            onClick={() => router.push("/browse/?type=series")}
           >
-            Edit
+            TV Shows
+          </DropdownItem>
+          <DropdownItem
+            variant="light"
+            className="!bg-black !text-gray-400 hover:!text-white"
+            key="edit"
+            onClick={() => router.push("/browse/?type=movie")}
+          >
+            Movies
+          </DropdownItem>
+          <DropdownItem
+            variant="light"
+            className="!bg-black !text-gray-400 hover:!text-white"
+            key="edit"
+            onClick={() => router.push("/")}
+          >
+            New & Popular
+          </DropdownItem>
+          <DropdownItem
+            variant="light"
+            className="!bg-black !text-gray-400 hover:!text-white"
+            key="edit"
+            onClick={() => router.push("/browse/?search=my-list")}
+          >
+            My List
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

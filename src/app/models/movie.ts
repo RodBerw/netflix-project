@@ -11,6 +11,7 @@ export class Movie extends Model<movieDTO> implements movieDTO {
   public genre!: string;
   public releaseDate!: Date;
   public imageUrl!: string;
+  public type!: string;
 }
 
 Movie.init(
@@ -47,6 +48,10 @@ Movie.init(
     imageUrl: {
       type: DataTypes.TEXT,
       allowNull: true,
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

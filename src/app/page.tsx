@@ -1,40 +1,48 @@
 "use client";
 
-import CreateModal from "@/components/CreateModal";
-import Header from "@/components/Header";
 import Section from "@/components/Section";
 import { Button } from "@nextui-org/button";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Banner from "@/components/Banner";
 
 export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   return (
-    <div className="font-[family-name:var(--font-geist-sans)] text-primary">
-      <main className="bg-background h-auto">
-        <Header />
-        <div className="flex flex-col w-full font-bold">
-          <Section sectionName="All" />
+    <div className="font-[family-name:var(--font-geist-sans)] text-primary overflow-hidden">
+      <main className="bg-background h-auto flex flex-col items-center">
+        <Banner movies={[]} />
+        <div className="flex flex-col gap-20 w-full font-bold">
+          <Section
+            sectionName="Trending Now"
+            moviesProps={[]}
+            useMoviesProps={false}
+          />
+          <Section
+            sectionName="Recently Added"
+            moviesProps={[]}
+            useMoviesProps={false}
+          />
+          <Section
+            sectionName="Chosen for you"
+            moviesProps={[]}
+            useMoviesProps={false}
+          />
+          <Section sectionName="More" moviesProps={[]} useMoviesProps={false} />
         </div>
         <Button
           type="button"
-          className="w-full bg-secondary text-primary font-bold"
+          className="w-[25%] bg-secondary text-primary font-bold mt-12 mb-12"
           variant="flat"
           radius="sm"
           color="default"
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            router.push(`/?add=${true}`);
+          }}
         >
           Add Movie
         </Button>
       </main>
-      {isModalOpen && (
-        <div
-          className="w-full h-full inset-0 fixed bg-black bg-opacity-70"
-          onClick={() => setIsModalOpen(false)}
-        >
-          <CreateModal setIsModalOpen={setIsModalOpen} />
-        </div>
-      )}
     </div>
   );
 }

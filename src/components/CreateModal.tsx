@@ -7,6 +7,7 @@ import { Textarea } from "@nextui-org/input";
 import api from "@/utils/configAxios";
 import { useRouter } from "next/navigation";
 import PlaceholderImage from "../../public/icons/PlaceholderImage.svg";
+import { RadioGroup, Radio } from "@nextui-org/radio";
 
 export default function CreateModal({
   setIsModalOpen,
@@ -23,6 +24,7 @@ export default function CreateModal({
     genre: "",
     releaseDate: "",
     imageUrl: "",
+    type: "movie",
   });
 
   const handleSubmit = (e: any) => {
@@ -34,7 +36,8 @@ export default function CreateModal({
       movie.director === "" ||
       movie.genre === "" ||
       movie.releaseDate === "" ||
-      movie.imageUrl === ""
+      movie.imageUrl === "" ||
+      movie.type === ""
     ) {
       setSubmitted(true);
       return;
@@ -150,6 +153,22 @@ export default function CreateModal({
                 className="col-start-2 col-end-3 row-start-5 row-end-6"
               />
             </div>
+            <RadioGroup
+              label="Type: "
+              orientation="horizontal"
+              onChange={(e) =>
+                setMovie((prev) => ({ ...prev, type: e.target.value }))
+              }
+              defaultValue="movie"
+              className="!text-white"
+            >
+              <Radio classNames={{ label: "!text-white" }} value="movie">
+                Movie
+              </Radio>
+              <Radio classNames={{ label: "!text-white" }} value="series">
+                Series
+              </Radio>
+            </RadioGroup>
             <Button
               type="submit"
               className="w-full bg-secondary text-primary font-bold"

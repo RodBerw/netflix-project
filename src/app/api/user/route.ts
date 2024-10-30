@@ -36,6 +36,16 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
+    const user = JSON.parse(req.headers.get("user") as string);
+    const userToUpdateId = req.nextUrl.searchParams.get("id");
+
+    if (!user || (userToUpdateId && user.id !== parseInt(userToUpdateId))) {
+      return NextResponse.json(
+        { message: "You are not authorized to update this user" },
+        { status: 401 }
+      );
+    }
+
     await userService.updateUser(
       parseInt(req.nextUrl.searchParams.get("id") as string),
       await req.json()
@@ -51,6 +61,16 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const user = JSON.parse(req.headers.get("user") as string);
+    const userToDeleteId = req.nextUrl.searchParams.get("id");
+
+    if (!user || (userToDeleteId && user.id !== parseInt(userToDeleteId))) {
+      return NextResponse.json(
+        { message: "You are not authorized to delete this user" },
+        { status: 401 }
+      );
+    }
+
     await userService.deleteUser(
       parseInt(req.nextUrl.searchParams.get("id") as string)
     );

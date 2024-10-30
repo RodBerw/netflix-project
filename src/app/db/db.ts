@@ -18,7 +18,7 @@ connection
   })
   .then(() => {
     console.log("Connection has been established successfully.");
-    connection.sync();
+    connection.sync({ force: false });
   });
 
 export { connection };
