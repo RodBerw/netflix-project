@@ -111,9 +111,11 @@ export default function DetailsModal({
         </div>
         <div className="grid grid-cols-[2fr_1fr] gap-8">
           <div className="flex flex-col w-full p-12 pt-2 pb-0">
-            <p className="text-gray-300 inline-block">
-              {new Date(movie.releaseDate).getFullYear()} 10 episodes
-            </p>
+            {movie.type === "series" && (
+              <p className="text-gray-300 inline-block">
+                {new Date(movie.releaseDate).getFullYear()} 10 episodes
+              </p>
+            )}
             <div className="text-gray-400 w-[35px] bg-gray-800 border-1 border-gray-400 p-1 rounded-md">
               12+
             </div>
@@ -130,42 +132,44 @@ export default function DetailsModal({
             </div>
           </div>
         </div>
-        <div className="w-full pl-12 pr-12">
-          <h1 className="font-bold text-xl mt-12 mb-4">Episodes</h1>
-          <div className="flex flex-col">
-            {episodes.map((episode, key) => {
-              return (
-                <div
-                  key={key}
-                  className="h-[150px] w-full p-4 border-b-1 flex border-gray-600 rounded-md"
-                  style={{
-                    background: `${
-                      episode.id == selectedEp ? "#333" : "#33333300"
-                    }`,
-                  }}
-                >
-                  <div className="w-[7%] flex flex-shrink-0 flex-grow-0 justify-center items-center text-2xl text-[#d2d2d2]">
-                    {key + 1}
+        {movie.type === "series" && (
+          <div className="w-full pl-12 pr-12">
+            <h1 className="font-bold text-xl mt-12 mb-4">Episodes</h1>
+            <div className="flex flex-col">
+              {episodes.map((episode, key) => {
+                return (
+                  <div
+                    key={key}
+                    className="h-[150px] w-full p-4 border-b-1 flex border-gray-600 rounded-md"
+                    style={{
+                      background: `${
+                        episode.id == selectedEp ? "#333" : "#33333300"
+                      }`,
+                    }}
+                  >
+                    <div className="w-[7%] flex flex-shrink-0 flex-grow-0 justify-center items-center text-2xl text-[#d2d2d2]">
+                      {key + 1}
+                    </div>
+                    <div className="w-[18%] flex flex-shrink-0 flex-grow-0 justify-center items-center">
+                      <img
+                        className="w-full h-[73px] rounded-md object-cover"
+                        src={movie.imageUrl}
+                      />
+                    </div>
+                    <div className="w-[70%] min-h-full flex justify-center flex-col flex-shrink-0 flex-grow-0">
+                      <p className="font-bold text-base pt-4 pr-4 pl-4 pb-2">
+                        {episode.title}
+                      </p>
+                      <p className="h-full pl-4 pr-4 pb-4 text-[#d2d2d2] text-sm leading-5">
+                        {episode.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="w-[18%] flex flex-shrink-0 flex-grow-0 justify-center items-center">
-                    <img
-                      className="w-full h-[73px] rounded-md object-cover"
-                      src={movie.imageUrl}
-                    />
-                  </div>
-                  <div className="w-[70%] min-h-full flex justify-center flex-col flex-shrink-0 flex-grow-0">
-                    <p className="font-bold text-base pt-4 pr-4 pl-4 pb-2">
-                      {episode.title}
-                    </p>
-                    <p className="h-full pl-4 pr-4 pb-4 text-[#d2d2d2] text-sm leading-5">
-                      {episode.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

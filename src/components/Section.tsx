@@ -30,7 +30,9 @@ export default function Section({
     api
       .get(`/api/movie/`)
       .then((res) => {
-        setMovies(res.data);
+        const sortedMovies = res.data.sort(() => Math.random() - 0.5);
+        const first24Movies = sortedMovies.slice(0, 24);
+        setMovies(first24Movies);
       })
       .catch((err) => {
         console.log(err);

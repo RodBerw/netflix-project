@@ -32,8 +32,11 @@ export default function Browse() {
 
         if (type) {
           const filteredMovies = data.filter((movie) => movie.type === type);
+          const ordenedMovies = [...filteredMovies].sort((a, b) =>
+            a.id && b.id ? a.id - b.id : 0
+          );
           setType(type);
-          setMovies(filteredMovies);
+          setMovies([...ordenedMovies]);
           return;
         } else if (search) {
           if (search == "my-list") {
@@ -96,22 +99,38 @@ export default function Browse() {
         <div className="w-full flex flex-col gap-20 font-bold">
           <Section
             sectionName="Trending Now"
-            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            moviesProps={(() => {
+              const sortedMovies = [...movies].sort(() => Math.random() - 0.5);
+              const first24Movies = sortedMovies.slice(0, 24);
+              return first24Movies;
+            })()}
             useMoviesProps={true}
           />
           <Section
             sectionName="Recently Added"
-            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            moviesProps={(() => {
+              const sortedMovies = [...movies].sort(() => Math.random() - 0.5);
+              const first24Movies = sortedMovies.slice(0, 24);
+              return first24Movies;
+            })()}
             useMoviesProps={true}
           />
           <Section
             sectionName="Chosen for you"
-            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            moviesProps={(() => {
+              const sortedMovies = [...movies].sort(() => Math.random() - 0.5);
+              const first24Movies = sortedMovies.slice(0, 24);
+              return first24Movies;
+            })()}
             useMoviesProps={true}
           />
           <Section
             sectionName="More"
-            moviesProps={movies.sort(() => Math.random() - 0.5)}
+            moviesProps={(() => {
+              const sortedMovies = [...movies].sort(() => Math.random() - 0.5);
+              const first24Movies = sortedMovies.slice(0, 24);
+              return first24Movies;
+            })()}
             useMoviesProps={true}
           />
         </div>
@@ -119,7 +138,7 @@ export default function Browse() {
     );
   } else if (search) {
     return (
-      <div className="pt-16">
+      <div className="pt-52">
         <div
           className={`w-[92%] ml-[4%] mr-[4%] relative grid gap-[0.25vw] flex-wrap`}
           style={{

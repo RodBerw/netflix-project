@@ -90,12 +90,12 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
       {showArrows && (
         <div className="embla__controls">
           <div className="embla__buttons">
-            {slided && (
-              <PrevButton
-                onClick={onPrevButtonClick}
-                disabled={prevBtnDisabled}
-              />
-            )}
+            <PrevButton
+              onClick={onPrevButtonClick}
+              disabled={prevBtnDisabled}
+            />
+            {/* {slided && (
+            )} */}
             <NextButton
               onClick={() => {
                 setSlided(true);

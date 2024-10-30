@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { headers } from "next/headers";
 import { ModalProiver } from "@/components/ModalContext";
+import Footer from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <Header />
         <ModalProiver>{children}</ModalProiver>
+        <Footer />
       </body>
     </html>
   );

@@ -4,8 +4,10 @@ import Search from "../../public/icons/search.svg";
 import Notification from "../../public/icons/notification.svg";
 import Profile from "../../public/icons/profile.svg";
 import Select from "./Select";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@nextui-org/button";
+import { SelectItem, SelectSection } from "@nextui-org/react";
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,6 +15,10 @@ export default function Header() {
   const [searching, setSearching] = useState(false);
   const searchBarRef = useRef<HTMLInputElement>(null);
   const [scrollY, setScrollY] = useState(0);
+  const [mouseHoverNotification, setMouseHoverNotification] = useState(false);
+  const [mouseHoverUser, setMouseHoverUser] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +38,10 @@ export default function Header() {
 
   if (pathname == "/login" || pathname == "/register") return null;
   return (
-    <div className="fixed top-0 flex flex-col z-[60] w-full">
+    <div
+      className="fixed top-0 flex flex-col z-[60] w-full"
+      onMouseLeave={() => setMouseHoverUser(false)}
+    >
       <header
         className={`p-4 lg:pl-10 lg:pr-10 w-full flex justify-between items-center transition-colors duration-300 ${
           scrollY === 0 && pathname == "/"
@@ -77,7 +86,7 @@ export default function Header() {
                 pathname == "/latest" ? "font-bold" : "font-normal"
               }`}
             >
-              <a href="/latest">New & Popular</a>
+              <a href="/">New & Popular</a>
             </li>
             <li
               className={`${
@@ -105,11 +114,50 @@ export default function Header() {
                 placeholder="Titles, people and genres"
                 onBlur={() => setSearching(false)}
                 ref={searchBarRef}
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    router.push(`/`);
+                  } else {
+                    router.push(`/browse/?search=${e.target.value}`);
+                  }
+                }}
               />
             </div>
           )}
-          <Notification className="text-white w-6 h-6" />
-          <Profile className="text-white w-6 h-6" />
+          <Notification
+            className="text-white w-6 h-6 hover:cursor-pointer relative"
+            onMouseEnter={() => setMouseHoverNotification(true)}
+            onMouseLeave={() => setMouseHoverNotification(false)}
+          />
+          {mouseHoverNotification && (
+            <div className="absolute w-72 text-center mt-2 top-12 right-20 bg-background bg-opacity-70 p-12 rounded-none border-t-1 border-white">
+              <p className="text-gray-400">No recent notifications</p>
+            </div>
+          )}
+          <Profile
+            className="text-white w-6 h-6"
+            onMouseEnter={() => setMouseHoverUser(true)}
+          />
+          {mouseHoverUser && (
+            <div
+              className="absolute flex flex-col items-center w-50 text-center mt-2 top-12 right-11 bg-background bg-opacity-70 p-6 gap-4 rounded-sm border-1 border-gray-800"
+              onMouseLeave={() => setMouseHoverUser(false)}
+            >
+              <h1>User</h1>
+              <Button
+                type="button"
+                className="w-[50%] bg-secondary text-primary font-bold"
+                variant="flat"
+                radius="sm"
+                color="default"
+                onClick={() => {
+                  router.push(`/?add=${true}`);
+                }}
+              >
+                Add Movie
+              </Button>
+            </div>
+          )}
         </div>
       </header>
       {pathname != "/" ? (
@@ -118,7 +166,13 @@ export default function Header() {
             scrollY === 0 ? "bg-transparent" : "bg-background"
           }`}
         >
-          My List
+          {(() => {
+            if (pathname === "/browse") {
+              if (searchParams.get("type") === "series") return "TV Shows";
+              if (searchParams.get("type") === "movie") return "Movies";
+              if (searchParams.get("search") === "my-list") return "My List";
+            }
+          })()}
         </h1>
       ) : null}
     </div>
