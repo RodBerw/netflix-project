@@ -4,7 +4,7 @@
 
 This Netflix clone is a full-stack web application designed to showcase my skills in modern web development technologies. Built with Next.js (using TypeScript), Tailwind CSS, and MySQL2 with Sequelize, this project exemplifies my ability to create a responsive and dynamic user experience similar to that of the Netflix platform.
 
-![alt text](image.png)
+![alt text](./public/images/image.png)
 
 ## Technology Stack
 
