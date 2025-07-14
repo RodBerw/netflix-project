@@ -1,6 +1,9 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
+import Search from "../../public/icons/Search.svg";
+import Notification from "../../public/icons/Notification.svg";
+import Profile from "../../public/icons/Profile.svg";
+import Select from "./Select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Notification from "../../public/icons/Notification.svg";
