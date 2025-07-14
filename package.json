@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "docker_build": "docker build -t netflix_project .",
+    "docker_run": "docker run --env-file .env -p 3000:3000 netflix_project",
     "lint": "next lint"
   },
   "dependencies": {

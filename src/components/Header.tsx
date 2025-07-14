@@ -1,13 +1,12 @@
 "use client";
 
-import Search from "../../public/icons/search.svg";
-import Notification from "../../public/icons/notification.svg";
-import Profile from "../../public/icons/profile.svg";
-import Select from "./Select";
+import { Button } from "@nextui-org/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@nextui-org/button";
-import { SelectItem, SelectSection } from "@nextui-org/react";
+import Notification from "../../public/icons/Notification.svg";
+import Profile from "../../public/icons/Profile.svg";
+import Search from "../../public/icons/Search.svg";
+import Select from "./Select";
 
 export default function Header() {
   const pathname = usePathname();

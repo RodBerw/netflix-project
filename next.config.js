@@ -10,10 +10,6 @@ const nextConfig = {
     });
     return config;
   },
-
-  prerender: {
-    pages: ["/", "/about", "/login", "/register", "/browse"], // exclude /browse from prerendering
-  },
 };
 
 export default nextConfig;
