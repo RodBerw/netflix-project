@@ -1,3 +1,4 @@
+import { parse } from "path";
 import { listDTO } from "../dtos/listDTO";
 import { List } from "../models/list";
 
@@ -7,7 +8,10 @@ class ListService {
   }
 
   async createList(userId: number, movieId: number) {
-    return await List.create({ userId, moviesId: [movieId] } as listDTO);
+    return await List.create({
+      userId,
+      moviesId: JSON.stringify([movieId]),
+    } as listDTO);
   }
 
   async updateList(userId: number, movieId: number) {
@@ -15,7 +19,7 @@ class ListService {
 
     if (list) {
       return await List.update(
-        { moviesId: [...list.moviesId, movieId] },
+        { moviesId: JSON.stringify([...JSON.parse(list.moviesId), movieId]) },
         { where: { userId } }
       );
     }
@@ -26,7 +30,11 @@ class ListService {
 
     if (list) {
       return await List.update(
-        { moviesId: list.moviesId.filter((itemId) => itemId !== movieId) },
+        {
+          moviesId: JSON.stringify([
+            ...JSON.parse(list.moviesId).filter((id: number) => id !== movieId),
+          ]),
+        },
         { where: { id } }
       );
     } else {

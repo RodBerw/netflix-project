@@ -19,6 +19,7 @@
     "@nextui-org/theme": "^2.2.11",
     "@react-aria/collections": "^3.0.0-alpha.4",
     "@react-stately/collections": "^3.10.9",
+    "@types/react-toastify": "^4.1.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
@@ -30,7 +31,9 @@
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
-    "sequelize": "^6.37.3"
+    "react-toastify": "^11.0.5",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

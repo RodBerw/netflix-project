@@ -43,7 +43,12 @@ export default function Browse() {
             api
               .get(`/api/list/?userId=${localStorage.getItem("userId")}`)
               .then((res) => {
-                const moviesId = res.data.moviesId;
+                if (!res.data) {
+                  return;
+                }
+
+                console.log(res.data);
+                const moviesId = JSON.parse(res.data.moviesId);
 
                 // Create an array of promises to fetch each movie
                 const movieRequests = moviesId.map((movieId: number) =>

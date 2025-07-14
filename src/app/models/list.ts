@@ -5,7 +5,7 @@ import { connection } from "../db/db";
 export class List extends Model<listDTO> implements listDTO {
   public id!: number;
   public userId!: number;
-  public moviesId!: number[];
+  public moviesId!: string;
 }
 
 List.init(
@@ -20,7 +20,7 @@ List.init(
       allowNull: false,
     },
     moviesId: {
-      type: DataTypes.JSON,
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },

@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (err: any) {
+    console.log(err.message);
     return NextResponse.json(
       { message: "Error while creating list: " + err.message },
       { status: 500 }

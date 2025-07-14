@@ -68,7 +68,9 @@ export default function Banner({ movies }: Props) {
               onClick={() => {
                 modalContext.setSearch(searchParams.get("search") ?? "");
                 modalContext.setType(searchParams.get("type") ?? "");
-                router.push(
+                window.history.replaceState(
+                  null,
+                  "",
                   //   `${pathname}/?id=${bannerMovie?.id}${
                   //     searchParams.get("type")
                   //       ? `&type=${searchParams.get("type")}`
@@ -78,11 +80,7 @@ export default function Banner({ movies }: Props) {
                   //       ? `&search=${searchParams.get("search")}`
                   //       : ""
                   //   }`
-                  `${
-                    window.location.search
-                      ? window.location.href + `&id=${bannerMovie?.id}`
-                      : `?id=${bannerMovie?.id}`
-                  }`
+                  `${`?id=${bannerMovie?.id}`}`
                 );
               }}
               className="pl-[1vw] pr-[2vw] pb-[.5vw] pt-[.5vw] h-auto bg-gray-500 rounded-md !bg-opacity-40 border-none font-semibold text-base text-white"

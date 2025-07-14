@@ -105,10 +105,11 @@ export const ModalProiver: React.FC<{ children: React.ReactNode }> = ({
         <div
           className="w-full h-full inset-0 fixed bg-black bg-opacity-70 z-[70]"
           onClick={() => {
-            console.log(search, type);
             setIsCreateModalOpen(false);
             setIsDetailModalOpen(false);
-            router.push(
+            window.history.replaceState(
+              null,
+              "",
               pathname +
                 `${type ? `?type=${type}` : search ? `?search=${search}` : ""}`
             );

@@ -9,6 +9,7 @@ import { waitForSeconds } from "@/utils/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { ModalContext } from "./ModalContext";
+import { toast } from "react-toastify";
 
 interface MovieCardProps {
   imageUrl: string;
@@ -101,16 +102,22 @@ export default function MovieCard({
                 console.log(err);
               }
 
-              if (!list) {
-                await api.post("/api/list", {
-                  userId: userId,
-                  movieId: movie.id,
-                });
-              } else {
-                await api.put(`/api/list/`, {
-                  userId: userId,
-                  movieId: movie.id,
-                });
+              try {
+                if (!list) {
+                  await api.post("/api/list", {
+                    userId: userId,
+                    movieId: movie.id,
+                  });
+                } else {
+                  await api.put(`/api/list/`, {
+                    userId: userId,
+                    movieId: movie.id,
+                  });
+                }
+
+                toast.success("Movie added to list successfully");
+              } catch (err: any) {
+                console.log(err);
               }
             }}
             className="w-[12%] hover:cursor-pointer"
@@ -120,7 +127,8 @@ export default function MovieCard({
             onClick={() => {
               modalContext.setSearch(searchParams.get("search") ?? "");
               modalContext.setType(searchParams.get("type") ?? "");
-              router.push(`${pathname}/?id=${movie.id}`);
+
+              window.history.replaceState(null, "", `/?id=${movie.id}`);
             }}
             className="w-[12%] ml-auto hover:brightness-110 cursor-pointer"
             src="/icons/Expand.png"

@@ -156,6 +156,20 @@ export default function Header() {
               >
                 Add Movie
               </Button>
+              <Button
+                type="button"
+                className="w-[50%] bg-secondary text-primary font-bold"
+                variant="flat"
+                radius="sm"
+                color="default"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("userId");
+                  router.push(`/login`);
+                }}
+              >
+                Logout
+              </Button>
             </div>
           )}
         </div>
